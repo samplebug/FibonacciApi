@@ -1,0 +1,39 @@
+﻿@page
+@model FibonacciModel
+@{
+    ViewData["Title"] = "Fibonacci Calculator";
+}
+
+<h1>Fibonacci Calculator</h1>
+
+<form id="fibonacciForm">
+    <label for="n">Enter a number (n):</label>
+    <input type="number" id="n" name="n" value="" required>
+    <button type="submit">Calculate</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    // Attach event listener to the form submission
+    document.getElementById("fibonacciForm").addEventListener("submit", async (event) => {
+        event.preventDefault(); // Prevent the default form submission behavior
+        const n = document.getElementById("n").value;
+        const resultDiv = document.getElementById("result");
+
+        resultDiv.innerHTML = "Calculating...";
+
+        try {
+            const response = await fetch(`/api/fibonacci?n=${n}`);
+            if (response.ok) {
+                const result = await response.text();
+                resultDiv.innerHTML = `The Fibonacci number is <strong>${result}</strong>.`;
+            } else {
+                const error = await response.text();
+                resultDiv.innerHTML = `<span style="color: red;">Error: ${error}</span>`;
+            }
+        } catch (error) {
+            resultDiv.innerHTML = `<span style="color: red;">Error: Unable to fetch the result. Please try again.</span>`;
+        }
+    });
+</script>

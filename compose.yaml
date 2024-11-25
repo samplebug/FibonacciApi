@@ -1,0 +1,6 @@
+﻿services:
+  fibonacciapi:
+    image: fibonacciapi
+    build:
+      context: .
+      dockerfile: FibonacciApi/Dockerfile
