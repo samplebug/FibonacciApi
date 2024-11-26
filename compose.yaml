@@ -1,6 +1,10 @@
 ﻿services:
-  fibonacciapi:
-    image: fibonacciapi
+  fibonacci-api:
+    image: fibonacci-api:latest
     build:
       context: .
-      dockerfile: FibonacciApi/Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80" # load balancer will forward to this
+    deploy:
+      replicas: 3
