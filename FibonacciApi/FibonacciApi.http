@@ -1,6 +1,6 @@
-@FibonacciApi_HostAddress = http://localhost:5257
+@FibonacciApi_HostAddress = http://localhost:8080
 
-GET {{FibonacciApi_HostAddress}}/weatherforecast/
+GET {{FibonacciApi_HostAddress}}/api/fibonacci/
 Accept: application/json
 
 ###

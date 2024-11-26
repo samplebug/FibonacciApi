@@ -3,15 +3,15 @@ using FibonacciApi;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FibonacciController(FibonacciService fibonacciService) : ControllerBase
+public class FibonacciController(IFibonacciService fibonacciService) : ControllerBase
 {
     [HttpGet]
-    public IActionResult GetFibonacci([FromQuery] int n)
+    public async Task<IActionResult> GetFibonacci([FromQuery] int n)
     {
         if (n < 0)
-            return BadRequest("A number must not be negative");
+            return BadRequest("Input must not be negative");
 
-        var result = fibonacciService.CalculateFibonacci(n);
+        var result = await fibonacciService.CalculateFibonacciAsync(n);
 
         return Ok(result.ToString());
     }
