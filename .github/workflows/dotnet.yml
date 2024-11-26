@@ -24,6 +24,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
+    - name: Install Workloads
+      run: dotnet workload install
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
