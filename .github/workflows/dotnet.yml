@@ -24,13 +24,14 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
-    - name: Install Workloads
-      run: dotnet workload install
+      
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --no-restore --configuration Release
+      
     - name: Test
       run: |
         set -e
-        dotnet test --no-build --verbosity diag
+        dotnet test --no-build --configuration Release
