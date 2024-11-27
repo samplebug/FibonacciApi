@@ -1,0 +1,9 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS test
+WORKDIR /src
+COPY ["FibonacciApi/FibonacciApi.csproj", "FibonacciApi/"]
+COPY ["FibonacciApi.Tests/FibonacciApi.Tests.csproj", "FibonacciApi.Tests/"]
+RUN dotnet restore "FibonacciApi/FibonacciApi.csproj"
+
+COPY . .
+WORKDIR "/src/FibonacciApi.Tests"
+RUN dotnet test --configuration Release
