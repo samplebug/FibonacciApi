@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, fedora-latest]
+        os: [ubuntu-latest]
         dotnet-version: ['8.0.x']
 
     steps:
@@ -34,3 +34,4 @@ jobs:
     - name: Test
       run: |
         set -e
+        dotnet test --no-build --configuration Release
