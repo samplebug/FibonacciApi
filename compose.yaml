@@ -5,6 +5,6 @@
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80" # load balancer will forward to this
+      - "0:8080" # load balancer will forward to this
     deploy:
       replicas: 3

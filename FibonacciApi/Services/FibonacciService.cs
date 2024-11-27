@@ -10,7 +10,7 @@ public class FibonacciService(IDistributedCache cache, ILogger<FibonacciService>
 {
     const double CacheSpanMinutes = 10;
 
-    // Custom Prometheus Counter for Fibonacci calculations
+    // custom prometheus counter
     static readonly Counter FibonacciCounter = Metrics.CreateCounter(
         "fibonacci_calculations_total",
         "Total number of Fibonacci calculations performed.");
@@ -24,9 +24,9 @@ public class FibonacciService(IDistributedCache cache, ILogger<FibonacciService>
             throw new ArgumentException("Input must be non-negative");
         }
 
-        FibonacciCounter.Inc(); // Increment the custom metric
-
         logger.LogInformation($"Calculating Fibonacci for {n}");
+        FibonacciCounter.Inc(); // increment the custom metric
+
         var options = new JsonSerializerOptions();
         options.Converters.Add(new BigIntegerConverter());
 
@@ -37,21 +37,19 @@ public class FibonacciService(IDistributedCache cache, ILogger<FibonacciService>
             {
                 var deserializedValue = JsonSerializer.Deserialize<BigInteger>(cachedValue, options);
                 logger.LogInformation($"Fetched cached result of {cachedValue}");
-                logger.LogInformation($"Fetched cached result of {deserializedValue}");
                 return deserializedValue;
             }
             catch (JsonException)
             {
                 logger.LogError($"Invalid cached data for key {n}");
-                Console.WriteLine($"Invalid cached data for key {n}");
             }
         }
 
-
         var result = CalculateFibonacci(n);
+
         logger.LogInformation($"Result {result.ToString()}");
 
-        // Cache the result
+        // cache the result
         logger.LogDebug($"Caching Fibonacci for {n}");
         var cacheOptions = new DistributedCacheEntryOptions
         {
@@ -61,10 +59,10 @@ public class FibonacciService(IDistributedCache cache, ILogger<FibonacciService>
         var serializedResult = JsonSerializer.Serialize(result, options);
 
         logger.LogInformation("Storing Fibonacci result {Result} for input {Input} in cache", result, n);
+
         await cache.SetStringAsync(n.ToString(), serializedResult, cacheOptions);
+
         logger.LogInformation("Cached result stored successfully.");
-
-
         logger.LogDebug($"Finished calculations for {n}");
 
         return result;
